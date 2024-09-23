@@ -1,0 +1,581 @@
+﻿@{
+
+    var id = "0";
+    var Score = "0";
+    var Time = "0";
+    var Try = "0";
+    var Logged = "Giriş Yapmadınız";
+    var Flag = "0";
+
+    if (Session["IsLoggedIn_Gamedata"] != null)
+    {
+        id = Session["ID_Gamedata"].ToString();
+        Score = Session["Score_Gamedata"].ToString();
+        Time = Session["Time_Gamedata"].ToString();
+        Try = Session["Try_Gamedata"].ToString();
+        Logged = Session["IsLoggedIn_Gamedata"].ToString();
+        Flag = Session["Flag_Gamedata"].ToString();
+    }
+    int buttonID = 1;
+    string activated = ViewBag.Btn1;
+}
+<style>
+    [activated~=active] {
+        background-color: white !important;
+    }
+
+        [activated~=active]:hover {
+            background-color: gainsboro !important;
+        }
+
+    .gamePlace {
+        margin-left: 17%;
+    }
+
+    .scoreBoard {
+        background-color: darkgrey;
+        margin-top: 40px;
+        width: 100%;
+    }
+
+    tbody {
+        background-color: darkgrey;
+    }
+
+    .mineAreas {
+        width: 50px;
+        height: 50px;
+        background-color: gainsboro;
+    }
+
+        .mineAreas:hover {
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+        }
+
+    .gameBlocker {
+        position: absolute;
+        width: 847px;
+        height: 820px;
+        background-color: darkgrey;
+        margin-left: 9%;
+        z-index: 0;
+        padding: 20px;
+        padding-left: 20px;
+        border-radius: 3px;
+    }
+
+    img:hover {
+        box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.3);
+    }
+
+    .forhover {
+        background-color: #dcdcdc;
+        padding: 10px;
+        color: black;
+        border-radius: 10px;
+    }
+
+        .forhover:hover {
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.3);
+        }
+
+    .currentgameScoreBoard {
+        position: absolute;
+        height: 500px;
+        width: 100px;
+        background-color: grey;
+        margin-left: 2%;
+        margin-top: 7%;
+        padding: 10px;
+        text-align: center;
+        color: white;
+        font-size: 250%;
+        padding-top: 2%;
+        border-radius: 2px;
+        box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.30);
+    }
+
+        .currentgameScoreBoard div {
+            margin-top: 20px;
+        }
+
+        .currentgameScoreBoard:hover {
+            box-shadow: 7px 7px 0px rgba(0, 0, 0, 0.3);
+        }
+
+    .gameBlocker button {
+        margin-left: 100px;
+        margin-left: 177px;
+        margin-top: 20px;
+        width: 150px;
+        height: 50px;
+        border-radius: 3px;
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .chatbox {
+        background-color: silver;
+        padding: 15px;
+        width: 350px;
+        position: fixed;
+        bottom: 4px;
+        left: 4px;
+        border-radius: 5px;
+    }
+
+    .chatboxhider {
+        background-color: black;
+        width: 360px;
+        position: fixed;
+        bottom: 4px;
+        left: 4px;
+        border-radius: 5px;
+        height: 700px;
+        z-index: 0;
+    }
+
+    .TextArea {
+        background-color: #2b2d2c;
+        border-width: 2px;
+        border-color: #00000036;
+        border-style: outset;
+        color: white;
+        border: 4px groove #ffffff;
+        overflow: scroll;
+        overflow-x: hidden;
+        height: 350px;
+        padding: 10px;
+    }
+
+    .textMessage {
+        background-color: #4c3e3e;
+        padding: 2px;
+        margin: 2px;
+        padding-left: 5px;
+        padding-right: 5px;
+        max-width: 261px;
+        word-wrap: break-word;
+        color: white;
+        border-style: ridge;
+        border-width: 1px;
+        border-color: silver;
+    }
+
+    .messageText {
+        width: 90%;
+        max-width: 9000px !important;
+        color: white !important;
+        background-color: #2b2d2c;
+        padding-left: 5px;
+        margin-top: 12px;
+        border: 4px groove #878787;
+        border-radius: 0px 0px 10px 0px;
+    }
+
+    ::placeholder {
+        color: #a9a4a4;
+        opacity: 1;
+    }
+
+    .titleforchat {
+        padding: 10px;
+        color: black;
+        background-color: darkgrey;
+        width: 35%;
+        border-color: black;
+        border-width: 2px;
+        border-style: solid;
+        font-weight: 700;
+        border-radius: 5px 0px 5px 0px;
+        text-shadow: 0px -6px 30px #ffffff,3px -1px 0px #414943;
+    }
+
+        .titleforchat:hover {
+            background-color: #2b2d2c;
+            animation-delay: 4s;
+        }
+
+    .pmbox {
+        position: fixed;
+        bottom: 0px;
+        right: 0px;
+        height: 400px;
+        width: 250px;
+        border-width: 2px;
+        padding: 10px;
+        background-color: silver;
+        border-radius: 5px;
+        display: none;
+    }
+
+    .PmArea {
+        background-color: #2b2d2c;
+        height: 70%;
+        margin-top: 10px;
+        border-radius: 3px;
+        padding: 5px;
+        overflow: scroll;
+        overflow-x: hidden;
+    }
+</style>
+
+<div class="chatbox">
+    <h1 class="titleforchat" id="chatbox">Welcome To Chatbox!</h1>
+    <div class="TextArea">
+    </div>
+    <input type="text" class="messageText" id="messageText" placeholder="Mesajınızı girin !" />
+
+    <input type="button" class="btn btn-warning" id="sendBtnForMessage" style="margin-left: -1px; margin-top: 8px;" value="Gönder!" />
+</div>
+<div class="pmbox">
+    <div class="Userinfo" style="background-color:#2b2d2c; color:white; border-radius: 3px; padding: 5px;">
+    </div>
+
+    <div class="PmArea">
+    </div>
+    <input type="text" class="messageText" id="messageTextPM" placeholder="Mesajınızı girin !" />
+    <input type="button" class="btn btn-warning" id="sendBtnForPM" style="margin-left: -1px; margin-top: 8px; display:none;" value="Gönder!" />
+</div>
+<script>
+    var logged = ('@Logged');
+    var point = 1;
+    var flagCount = 0;
+    var time = 0;
+    var flagChecker;
+    var timerStarter = false;
+    var zeros = [];
+    var users = [];
+    var valueofattr;
+    var receiver;
+    var notificationCount;
+    $(function () {
+        $(document).ready(function () {
+            $('.gameBlocker').hide();
+            $(".mineAreas").attr("flag", 'notflag');
+            $(".mineAreas").attr("activated", 'notactivated');
+            $('timerDisp').hide();
+            $('#won').hide();
+            readMessages();
+            readNotifications();
+        });
+        $('.mineAreas').one("click", function (e) {
+            if (timerStarter == false) {
+                var start = new Date;
+                setInterval(function () {
+                    var value = Math.round((new Date - start) / 1000, 0) + 1;
+                    $('.Timer').text(value);
+                    timerStarter = true;
+                }, 1000)
+            }
+        });
+    });
+    $(document).keypress(function (e) {
+        var keycode = (e.keyCode ? e.keyCode : e.which);
+        if ((keycode == '13') && (receiver != null)) {
+             $("#sendBtnForPM").click();
+        }
+        else if (keycode == '13') {
+            $("#sendBtnForMessage").click();
+        }
+        //isDisplaying();
+    });
+    $(".mineAreas").click(function () {
+        $('.score').html(point);
+        var start = new Date;
+        var ClickedbuttonID = $(this).attr("id");
+        var btnID = parseInt(ClickedbuttonID);
+        var list = new Array;
+        $.ajax({
+            type: "POST",
+            url: '/Home/GetCount',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ index: btnID, }),
+            success: function (data) {
+                if (data==7) {
+                    time = $('.Timer').text();
+                    $('.Timer').hide(1);
+                    $('.TimerDisp').text(time);
+                    $('#' + ClickedbuttonID).css('background-image', "url('../../Pictures/minesweeper-2018-02-08_06-50-56-icon-resized.png')");
+                    $('#' + ClickedbuttonID).css('background-size', "100%");
+                    $('.gameBlocker').toggle(300);
+                    toastr.info("Yeniden denemek için yenile işaretine basın.", "Oyun bitti");
+                }
+                else {
+                    $('#' + ClickedbuttonID).attr("activated", 'active');
+                    $('#' + ClickedbuttonID).prop("onclick", null).off("click");
+                    if (data!=0) {
+                    $('#' + ClickedbuttonID).text(data);
+                    }
+                    $('#' + ClickedbuttonID).attr('flag', 'notflag');
+                    $('#' + ClickedbuttonID).css('background-image', 'none');
+                    flagCount = $("label[flag='flag']").length;
+                    $('.flag').html(flagCount);
+                    point++;
+                    if (data == "0") {
+                        aroundCaller(ClickedbuttonID);
+                        $('#' + ClickedbuttonID).css("background-color","#ffffff")
+                    }
+                    var flagCount = $("label[flag='flag']").length;
+                    $('.flag').html(flagCount);
+                }
+                 finisher();
+                },
+            error: function (data) {
+                alert('wtf');
+            }
+        });
+    });
+    $(".mineAreas").mousedown(function (ev) {
+        flagCount = $("label[flag='flag']").length;
+        flagChecker = $(this).attr('flag');
+        if (flagCount<40) {
+              if ((ev.which == 3) && (flagChecker == 'notflag')) {
+            $(this).attr('flag', 'flag');
+            var flagCount = $("label[flag='flag']").length;
+            $('.flag').html(flagCount);
+            $(this).css('background-image', "url('../../Pictures/flag_icon.png')");
+            $(this).css('background-size', "100%");
+        }
+        }
+        if ((ev.which == 3) && (flagChecker == 'flag')) {
+            $(this).attr('flag', 'notflag');
+            var flagCount = $("label[flag='flag']").length;
+            $('.flag').html(flagCount);
+            $(this).css('background-image', 'none');
+        }
+        finisher();
+    });
+    $('.mineAreas').contextmenu(function () {
+        return false;
+    });
+    $(".btn_restart").click(function () {
+       document.location.reload(true)
+    });
+    $("#SaveButton").click(function () {
+        $(this).css("box-shadow", "5px 5px 0px rgba(0, 0, 0, .5)");
+        if ((time == null)||(time=="")) {
+            time = 0;
+        }
+        if (logged == "logged") {
+            $.ajax({
+                type: "POST",
+                url: '/Home/gameUpdater',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ point: point, flag: flagCount, time: time }),
+                success: function (data) {
+                    toastr.success('Kayıt edildi')
+                },
+                error: function (data) {
+                    toastr.error('Kayıt başarısız.');
+                }
+            });
+            setTimeout(function () {
+            }, 20000);
+        }
+       document.location.reload(true)
+        });
+    $("#ResetButton").click(function () {
+       document.location.reload(true)
+    });
+    $("#sendBtnForMessage").click(function () {
+        if (logged == "logged") {
+            var UsernameForMessage = null;
+            var textMessage = $("#messageText").val();
+            for (var i = 1; i < users.length; i++) {
+                if (users[i] == textMessage) {
+                    receiver = i;
+                    UsernameForMessage = textMessage;
+                }
+            }
+            if (receiver != null) {
+                $('.pmbox').toggle(300);
+                $('.chatbox').toggle(300);
+                $('.Userinfo').empty();
+                var $label = $('<label>').html(UsernameForMessage + " " + "adlı kullanıcıya mesaj gönderiyorsunuz.").show(300);
+                toastr.info("Mesajlaşmayı sonlandırmak için " + UsernameForMessage + " " + "adlı kullanıcıya mesaj gönderiyorsunuz." + " yazısına çit tıklayın.");
+                $('.Userinfo').append($label);
+                readPersonelMessages();
+                $("#messageText").val("");
+            }
+            else {
+                var message = $("#messageText").val();
+                if (message.length > 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Home/MessageSender',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify({ Message: textMessage }),
+                        error: function (data) {
+                            alert('mesaj iletilemedi.');
+                        }
+                    });
+                    $("#messageText").val("");
+                    setTimeout(function () { }, 2000);
+                    readMessages();
+                }
+                else {
+                    $('.chatbox').toggle(300);
+                }
+            }
+        }
+        else {
+            toastr.info("Mesaj göndermek için oturum açmanız gerekiyor.");
+        }
+    });
+    $("#sendBtnForPM").click(function () {
+        sendPM();
+        setTimeout(function () { }, 1000);
+        readPersonelMessages();
+    });
+    $(".Userinfo").dblclick(function () {
+        $('.pmbox').toggle(300);
+        $('.chatbox').toggle(300);
+        receiver = null;
+        $(".PmArea").empty();
+        $("#messageTextPM").val("");
+    });
+    $("#chatbox").dblclick(function () {
+        getUsernames();
+    });
+
+    function aroundCaller(ClickedbuttonID) {
+        $.ajax({
+            type: "POST",
+            url: '/Home/EightMineChecker',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ index: ClickedbuttonID, }),
+            success: function (data) {
+                var zeroValues = [];
+                var values = [];
+                var sizeOfArrray = data.length;
+                for (var i = 0; i < sizeOfArrray; i++) {
+                    zeroValues.push(data[i]);
+                }
+                for (var i = 0; i < zeroValues.length; i++) {
+                    $('#' + zeroValues[i]).css("background-color", "#ffffff")
+                    zeros.push[zeroValues[i]];
+                    $('#' + zeroValues[i]).attr("activated", 'active');
+                    $('#' + zeroValues[i]).attr('flag', 'notflag');
+                    $('#' + zeroValues[i]).prop("onclick", null).off("click");
+                    $('.flag').html(flagCount);
+                    $('#' + zeroValues[i]).css('background-image', 'none');
+                }
+                point = point + 5;
+                $('.score').html(point);
+                var flagCount = $("label[flag='flag']").length;
+                $('.flag').html(flagCount);
+            }
+        });
+    }
+    function finisher() {
+        flagCount = $("label[flag='flag']").length;
+        valueofattr = $("label[activated='active']").length;
+        if (400 <= valueofattr + flagCount) {
+            time = $('.Timer').text();
+            $('.gameBlocker').toggle(300);
+            $("#lost").toggle();
+            $("#won").toggle();
+            $('.Timer').hide(1);
+            $('.TimerDisp').text(time);
+        }
+    };
+    function readMessages() {
+        $.ajax({
+            type: "POST",
+            url: '/Home/MessageReader',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                var messageNumber = data.length;
+                $(".TextArea").empty();
+                for (var i = 0; i < messageNumber; i++) {
+                    var $label = $('<label class="textMessage">').html(data[i]).show(300);
+                    var $br = $('<br>');
+                    $('.TextArea').append($label);
+                    $('.TextArea').append($br);
+                }
+            }
+        });
+    };
+    function readPersonelMessages() {
+        $.ajax({
+            type: "POST",
+            url: '/Home/PmReader',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ Receiver: receiver, }),
+            success: function (data) {
+                var messageNumber = data.length;
+                $(".PmArea").empty();
+                for (var i = 0; i < messageNumber; i++) {
+                    var $label = $('<label class="textMessage">').html(data[i]).show(300);
+                    var $br = $('<br>');
+                    $('.PmArea').append($label);
+                    $('.PmArea').append($br);
+                    $("#messageTextPM").val("");
+                }
+            }
+        });
+    };
+    function getUsernames() {
+        $.ajax({
+            type: "POST",
+            url: '/Home/GetUsernames',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                $(".TextArea").empty();
+                var messageNumber = data.length;
+                users.push("zerodata");
+                var $hr = $('<hr>');
+                var $usersTxt = $('<label>').html("Kullanıcı Listesi").show(300);
+                $('.TextArea').append($usersTxt);
+                $('.TextArea').append($hr);
+                for (var i = 0; i < messageNumber; i++) {
+                    var $label = $('<label class="textMessage">').html(data[i]).show(300);
+                    var $br = $('<br>');
+                    users.push(data[i]);
+                    $('.TextArea').append($label);
+                    $('.TextArea').append($br);
+                }
+
+            }
+        });
+    };
+    function sendPM() {
+        var message = $("#messageTextPM").val();
+        if (message.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: '/Home/PmSender',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ Receiver: receiver, Message: message, }),
+                success: function (data) {
+                    toastr.error('Mesaj Gönderildi.');
+                }
+            });
+        }
+        else {
+            $('.pmbox').toggle(300);
+            toastr.warning("Mesaj kutusu gizlendi. Tekrar enter'a basarak mesaj atmaya devam edebilirsiniz.");
+        }
+    };
+    function readNotifications() {
+        $.ajax({
+            type: "POST",
+            url: '/Home/PmReaderForNotification',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                notificationCount = data.length;
+                $(".dropdown-menu").empty();
+                for (var i = 0; i < notificationCount; i++) {
+                    var $append = $('<a class="dropdown-toggle">').html(data[i]).show(300);
+                    var $li = $('<li>');
+                    $($li).append($append);
+                    $('.dropdown-menu').append($li);
+
+                }
+                var oldtxt = $(".dropdown-toggle").html();
+                var txt = oldtxt +" "+notificationCount;
+                $("#notCount").html(txt);
+            }
+        });
+    };
+</script>

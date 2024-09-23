@@ -1,0 +1,53 @@
+﻿@using mayinTarlasi.Models.Entity
+@model List<TBLuserData>
+
+@{
+    ViewBag.Title = "ScoreTable";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    int i = 1;
+    string score;
+}
+<style>
+    .PmMessage {
+        display: none;
+        width: 500px;
+    }
+</style>
+<table class="table table-dark">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Kullanıcı Adı</th>
+            <th scope="col">Puan</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    @foreach (var data in Model)
+    {
+        <tbody>
+            <tr>
+
+                <th scope="row">@Html.Label(Convert.ToString(i))</th>                       
+                <td>@data.Username</td>
+                @{
+                    if (data.TBLgameDatas.FirstOrDefault().Score != null)
+                    {
+                        score = data.TBLgameDatas.FirstOrDefault().Score.ToString();
+
+                    }
+                    else
+                    {
+                        score = "0";
+
+                    }
+
+                    i++;
+                }
+                <td>@Html.Label(score)</td>
+                <td>
+                </td>
+            </tr>
+        </tbody>
+    }
+</table>
+

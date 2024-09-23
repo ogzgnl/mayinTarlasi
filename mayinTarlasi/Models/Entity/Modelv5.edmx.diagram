@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a9cc19335b064d5c94c9c9572d194554" Name="Diagram1">
+        <EntityTypeShape EntityType="MVCTestModel.PublicMessenger" PointX="5.25" PointY="2.125" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MVCTestModel.sysdiagram" PointX="7.875" PointY="4.5" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MVCTestModel.TBLgameData" PointX="3" PointY="1.125" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MVCTestModel.TBLuserData" PointX="0.75" PointY="2.5" Width="1.5" IsExpanded="true" />
+        <AssociationConnector ManuallyRouted="false" Association="MVCTestModel.FK_PublicMessenger_TBLgameData" />
+        <AssociationConnector ManuallyRouted="false" Association="MVCTestModel.FK_PublicMessenger_TBLuserData" />
+        <AssociationConnector ManuallyRouted="false" Association="MVCTestModel.FK_TBLgameData_TBLuserData" />
+        <EntityTypeShape EntityType="MVCTestModel.PersonelMessage" PointX="3" PointY="4.375" Width="1.5" />
+        <AssociationConnector Association="MVCTestModel.FK_PersonelMessage_TBLuserData" />
+        <AssociationConnector Association="MVCTestModel.FK_PersonelMessage_TBLuserData1" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

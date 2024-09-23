@@ -1,0 +1,218 @@
+﻿@using mayinTarlasi.Models.Entity
+@model List<TBLuserData>
+@{
+    ViewBag.Title = "myAccount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var kAdi = Session["username"].ToString();
+    var sifre = Session["password"].ToString();
+    var id = Session["ID"].ToString();
+    var email = Session["Email"].ToString();
+    var adSoyad = Session["NameSurname"].ToString();
+    var profilepic = Session["ProfilePic"];
+    if (profilepic== null)
+    {
+        profilepic = "default.png";
+    }
+    else
+    {
+        profilepic = Session["ID"];
+        profilepic = profilepic + ".png";
+    }
+}
+<style>
+    .AccountItem {
+        background-color: lightgrey;
+        margin: 5px;
+        margin-left: 50px;
+        width: 55%;
+        display: inline-block;
+        padding-right: 20px;
+    }
+
+        .AccountItem:hover {
+            box-shadow: 10px 14px 8px -9px rgba(79,79,79,0.36);
+        }
+
+    img:hover {
+        box-shadow: 10px 14px 8px -9px rgba(79,79,79,0.36);
+    }
+
+    label {
+    }
+
+    td {
+        background-color: #a5a5a5;
+        font-weight: 100;
+        padding-left: 5px;
+    }
+
+    img {
+        margin-top: -136px;
+        width: 400px;
+        height: 400px;
+    }
+
+    .AccountItem input {
+        background-color: #969696;
+        border-style: none;
+        padding-left: 8px;
+        color: black;
+        font-weight: 700;
+        padding-left: 5px;
+    }
+</style>
+<div class="container">
+    <div class="jumbotron">
+        <h2 style="font-weight:bold;">HESABIM</h2>
+        <p>
+            <small>
+                Hesap bilgileriniz bu sayfada listelenir.
+            </small>
+        </p>
+        <hr>
+        <img src="~/Pictures/ProfilePhotos/@profilepic" class="rounded float-left" id="pictureBox">
+        <div class="AccountItem">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row" style="width:150px; padding-left:20px;padding-top:10px;">ID:</th>
+                        <td>@Html.Label(id, id)</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" style="width:150px; padding-left:20px;padding-top:10px;"> Kullanıcı Adı:</th>
+                        <td id="Username">@Html.Label(kAdi, kAdi)</td>
+                        <td id="UsernameHider"><input type="text" id="UsernameValue"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row" style="width:150px; padding-left:20px;padding-top:10px;"> Şifre : </th>
+                        <td id="Password">@Html.Label(sifre, sifre)</td>
+                        <td id="PasswordHider"><input type="text" id="PasswordValue"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row" style="width:150px; padding-left:20px;padding-top:10px;">Email :</th>
+                        <td id="eMail">@Html.Label(email, email)</td>
+                        <td id="eMailHider"><input type="text" id="eMailValue"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row" style="width:150px; padding-left:20px;padding-top:10px;"> Ad Soyad:</th>
+                        <td id="nameSurname"> @Html.Label(adSoyad, adSoyad)</td>
+                        <td id="nameSurnameHider"><input type="text" id="nameSurnameValue"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="file" id="pictureUpload" style="display: none;" />
+            <input class="btn btn-primary center-block" type="button" value="Güncelle" id="updateBtn" style="margin-bottom:10px;">
+        </div>
+        <hr />
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+         $("#pictureUpload").change(function() {
+         var formData = new FormData();
+         var totalFiles = document.getElementById("pictureUpload").files.length;
+         for (var i = 0; i < totalFiles; i++)
+         var file = document.getElementById("pictureUpload").files[i];
+         formData.append("pictureUpload", file);
+             $.ajax({
+                 type: "POST",
+                 url: 'Upload',
+                 data: formData,
+                 dataType: 'json',
+                 contentType: false,
+                 processData: false
+             })
+                 .done(function () {
+                     toastr.info("Profil fotoğrafı yüklendi.");
+               })
+                 .fail(function (xhr, status, errorThrown) {
+                     toastr.error("Bir hata oluştu.");
+               })
+         });
+        $('#UsernameHider').hide();
+        $('#PasswordHider').hide();
+        $('#eMailHider').hide();
+        $('#nameSurnameHider').hide();
+        $('#updateBtn').hide();
+        $('#UsernameValue').val("@kAdi");
+        $('#PasswordValue').val("@sifre");
+        $('#eMailValue').val("@email");
+        $('#nameSurnameValue').val("@Html.Raw(@adSoyad)");
+    });
+    $('#Username').dblclick(function () {
+        $("#Username").hide();
+        $("#UsernameHider").toggle();
+        $('#updateBtn').fadeIn();
+    });
+    $('#UsernameHider').dblclick(function () {
+        $("#UsernameHider").hide();
+        $("#Username").toggle();
+        $('#updateBtn').hide();
+    });
+    $('#Password').dblclick(function () {
+        $("#Password").hide();
+        $("#PasswordHider").toggle();
+        $('#updateBtn').fadeIn();
+    });
+    $('#PasswordHider').dblclick(function () {
+        $("#PasswordHider").hide();
+        $("#Password").toggle();
+        $('#updateBtn').hide();
+    });
+    $('#eMail').dblclick(function () {
+        $("#eMail").hide();
+        $("#eMailHider").toggle();
+        $('#updateBtn').fadeIn();
+    });
+    $('#eMailHider').dblclick(function () {
+        $("#eMailHider").hide();
+        $("#eMail").toggle();
+        $('#updateBtn').hide();
+    });
+    $('#nameSurname').dblclick(function () {
+        $("#nameSurname").hide();
+        $("#nameSurnameHider").toggle();
+        $('#updateBtn').fadeIn();
+
+    });
+    $('#nameSurnameHider').dblclick(function () {
+        $("#nameSurnameHider").hide();
+        $("#nameSurname").toggle();
+        $('#updateBtn').hide();
+    });
+    $('#updateBtn').click(function () {
+        var UserNamev = $("#UsernameValue").val();
+        var Passwordv = $("#PasswordValue").val();
+        var Mailv = $("#eMailValue").val();
+        var NameSurnamev = $("#nameSurnameValue").val();
+
+        if ((UserNamev.length > 1) && (Passwordv.length > 1) && (Mailv.length > 1) && (NameSurnamev.length > 1)) {
+            $.ajax({
+                type: "POST",
+                url: 'accountUpdater',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ UserName: UserNamev, Password: Passwordv, Mail: Mailv, NameSurname: NameSurnamev }),
+                success: function (data) {
+                    toastr.info("Verileriniz güncellenmiştir.");
+                },
+            });
+        }
+        else {
+            toastr.error("Lütfen alanları doldurunuz.");
+        }
+    });
+
+    $("#pictureBox").click(function () {
+        $("#pictureUpload").click();
+    });
+</script>
+
+
+

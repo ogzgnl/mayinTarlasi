@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    body {
+        background-image: url('../../Pictures/BLACK_IV_phone-3.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    input {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    footer {
+        color: white;
+    }
+</style>
+<div class="signup-form">
+    <div class="form-group">
+        <div style="padding:10px; margin-top:40px; padding-top:40px;">
+            <div style=" margin-right:250px; width:300px;height:800px;background-color:rgba(35, 34, 34, 0.89);padding:20px;border-radius:3px; padding-top:10%;">
+                <h2 style="color:white; padding-bottom:25px; padding-top:40px;">Giriş Yap</h2>
+                <div class="row">
+                    <div style="width:100%; border-radius:0px !important;" class="col-xs-6"><input type="text" class="form-control" id="Username" placeholder="Kullanıcı Adı"></div>
+                </div>
+                <div class="row">
+                    <div style="width:100%" class="col-xs-6"><input type="password" class="form-control" id="Password" placeholder="Şifre"></div>
+                </div>
+                <hr />
+                <label class="checkbox-inline" style="padding:20px; color:white;"><input type="checkbox">Beni Hatırla</label>
+                <button type="submit" class="btn btn-success btn-lg btn-block" data-toggle="" data-target="#" id="SEND" style="background-color:rgba(35, 34, 34, 1);border-color:white;">Giriş Yap</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).keypress(function (e) {
+        var keycode = (e.keyCode ? e.keyCode : e.which);
+        if (keycode == '13') {
+            $("#SEND").click();
+        }
+    });
+    $('.select-link').click(function () {
+        var id = $(this).attr('data-id');
+    });
+    $("#SEND").click(function () {
+        var name = $('#Username').value;
+        if (($('#Username').val().length > 0) && ($('#Password').val().length > 0)) {
+            var name = $('#Username').val();
+            var password = $('#Password').val();
+            $.ajax({
+                type: "POST",
+                url: 'Loginer',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ UserName: name, Password: password }),
+                success: function (data) {
+                    if (data == "") {
+                        toastr.error('Hatalı Şifre veya Kullanıcı Adı')
+                        $('#Username').val("");
+                        $('#Password').val("");
+                    }
+                    else {
+                        toastr.success('Hoşgeldiniz, Anasayfaya yönlendiriliyorsunuz.');
+                        window.location.href = '/Home/Index/';
+                    }
+                },
+                error: function (data) {
+                    toastr.error("Bir hata oluştu.");
+                }
+            });
+        }
+        else {
+            toastr.error("Lütfen gerekli bilgileri giriniz.");
+        }
+    });
+
+</script>

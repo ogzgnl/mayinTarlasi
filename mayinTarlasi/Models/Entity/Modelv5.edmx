@@ -1,0 +1,386 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MVCTestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="PersonelMessage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+          <Property Name="SenderID" Nullable="false" Type="int" />
+          <Property Name="ReceiverID" Nullable="false" Type="int" />
+          <Property Name="Message" Type="nvarchar(max)" />
+          <Property Name="Date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PublicMessenger">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+          <Property Name="SenderID" Nullable="false" Type="int" />
+          <Property Name="SenderName" MaxLength="50" Type="nvarchar" />
+          <Property Name="Message" Type="nvarchar(max)" />
+          <Property Name="Senddate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Nullable="false" MaxLength="128" Type="nvarchar" />
+          <Property Name="principal_id" Nullable="false" Type="int" />
+          <Property Name="diagram_id" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TBLgameData">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+          <Property Name="UserID" Nullable="false" Type="int" />
+          <Property Name="Score" Type="int" />
+          <Property Name="flagsUsed" Type="int" />
+          <Property Name="Time" Type="int" />
+          <Property Name="Try" Nullable="false" Type="int" />
+        </EntityType>
+        <EntityType Name="TBLuserData">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+          <Property Name="Username" MaxLength="50" Type="nvarchar" />
+          <Property Name="Password" MaxLength="50" Type="nvarchar" />
+          <Property Name="Email" MaxLength="50" Type="nvarchar" />
+          <Property Name="NameSurname" MaxLength="50" Type="nvarchar" />
+          <Property Name="ProfilePic" Type="int" />
+        </EntityType>
+        <Association Name="FK_PersonelMessage_TBLuserData">
+          <End Type="Self.TBLuserData" Multiplicity="1" Role="TBLuserData" />
+          <End Type="Self.PersonelMessage" Multiplicity="*" Role="PersonelMessage" />
+          <ReferentialConstraint>
+            <Principal Role="TBLuserData">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PersonelMessage">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonelMessage_TBLuserData1">
+          <End Type="Self.TBLuserData" Multiplicity="1" Role="TBLuserData" />
+          <End Type="Self.PersonelMessage" Multiplicity="*" Role="PersonelMessage" />
+          <ReferentialConstraint>
+            <Principal Role="TBLuserData">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PersonelMessage">
+              <PropertyRef Name="ReceiverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PublicMessenger_TBLgameData">
+          <End Type="Self.TBLgameData" Multiplicity="1" Role="TBLgameData" />
+          <End Type="Self.PublicMessenger" Multiplicity="*" Role="PublicMessenger" />
+          <ReferentialConstraint>
+            <Principal Role="TBLgameData">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PublicMessenger">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PublicMessenger_TBLuserData">
+          <End Type="Self.TBLuserData" Multiplicity="1" Role="TBLuserData" />
+          <End Type="Self.PublicMessenger" Multiplicity="*" Role="PublicMessenger" />
+          <ReferentialConstraint>
+            <Principal Role="TBLuserData">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PublicMessenger">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TBLgameData_TBLuserData">
+          <End Type="Self.TBLuserData" Multiplicity="1" Role="TBLuserData" />
+          <End Type="Self.TBLgameData" Multiplicity="*" Role="TBLgameData" />
+          <ReferentialConstraint>
+            <Principal Role="TBLuserData">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TBLgameData">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MVCTestModelStoreContainer">
+          <EntitySet Name="PersonelMessage" EntityType="Self.PersonelMessage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PublicMessenger" EntityType="Self.PublicMessenger" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBLgameData" EntityType="Self.TBLgameData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBLuserData" EntityType="Self.TBLuserData" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_PersonelMessage_TBLuserData" Association="Self.FK_PersonelMessage_TBLuserData">
+            <End EntitySet="TBLuserData" Role="TBLuserData" />
+            <End EntitySet="PersonelMessage" Role="PersonelMessage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonelMessage_TBLuserData1" Association="Self.FK_PersonelMessage_TBLuserData1">
+            <End EntitySet="TBLuserData" Role="TBLuserData" />
+            <End EntitySet="PersonelMessage" Role="PersonelMessage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PublicMessenger_TBLgameData" Association="Self.FK_PublicMessenger_TBLgameData">
+            <End EntitySet="TBLgameData" Role="TBLgameData" />
+            <End EntitySet="PublicMessenger" Role="PublicMessenger" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PublicMessenger_TBLuserData" Association="Self.FK_PublicMessenger_TBLuserData">
+            <End EntitySet="TBLuserData" Role="TBLuserData" />
+            <End EntitySet="PublicMessenger" Role="PublicMessenger" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TBLgameData_TBLuserData" Association="Self.FK_TBLgameData_TBLuserData">
+            <End EntitySet="TBLuserData" Role="TBLuserData" />
+            <End EntitySet="TBLgameData" Role="TBLgameData" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MVCTestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="PublicMessenger">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="SenderID" Nullable="false" Type="Int32" />
+          <Property Name="SenderName" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Message" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Senddate" Precision="3" Type="DateTime" />
+          <NavigationProperty Name="TBLgameData" Relationship="Self.FK_PublicMessenger_TBLgameData" FromRole="PublicMessenger" ToRole="TBLgameData" />
+          <NavigationProperty Name="TBLuserData" Relationship="Self.FK_PublicMessenger_TBLuserData" FromRole="PublicMessenger" ToRole="TBLuserData" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="principal_id" Nullable="false" Type="Int32" />
+          <Property Name="diagram_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" MaxLength="Max" FixedLength="false" Type="Binary" />
+        </EntityType>
+        <EntityType Name="TBLgameData">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="UserID" Nullable="false" Type="Int32" />
+          <Property Name="Score" Type="Int32" />
+          <Property Name="flagsUsed" Type="Int32" />
+          <Property Name="Time" Type="Int32" />
+          <Property Name="Try" Nullable="false" Type="Int32" />
+          <NavigationProperty Name="PublicMessengers" Relationship="Self.FK_PublicMessenger_TBLgameData" FromRole="TBLgameData" ToRole="PublicMessenger" />
+          <NavigationProperty Name="TBLuserData" Relationship="Self.FK_TBLgameData_TBLuserData" FromRole="TBLgameData" ToRole="TBLuserData" />
+        </EntityType>
+        <EntityType Name="TBLuserData">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="Username" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Password" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Email" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="NameSurname" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="ProfilePic" Type="Int32" />
+          <NavigationProperty Name="PublicMessengers" Relationship="Self.FK_PublicMessenger_TBLuserData" FromRole="TBLuserData" ToRole="PublicMessenger" />
+          <NavigationProperty Name="TBLgameDatas" Relationship="Self.FK_TBLgameData_TBLuserData" FromRole="TBLuserData" ToRole="TBLgameData" />
+          <NavigationProperty Name="PersonelMessages" Relationship="MVCTestModel.FK_PersonelMessage_TBLuserData" FromRole="TBLuserData" ToRole="PersonelMessage" />
+          <NavigationProperty Name="PersonelMessages1" Relationship="MVCTestModel.FK_PersonelMessage_TBLuserData1" FromRole="TBLuserData" ToRole="PersonelMessage" />
+        </EntityType>
+        <Association Name="FK_PublicMessenger_TBLgameData">
+          <End Type="Self.TBLgameData" Multiplicity="1" Role="TBLgameData" />
+          <End Type="Self.PublicMessenger" Multiplicity="*" Role="PublicMessenger" />
+          <ReferentialConstraint>
+            <Principal Role="TBLgameData">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PublicMessenger">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PublicMessenger_TBLuserData">
+          <End Type="Self.TBLuserData" Multiplicity="1" Role="TBLuserData" />
+          <End Type="Self.PublicMessenger" Multiplicity="*" Role="PublicMessenger" />
+          <ReferentialConstraint>
+            <Principal Role="TBLuserData">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PublicMessenger">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TBLgameData_TBLuserData">
+          <End Type="Self.TBLuserData" Multiplicity="1" Role="TBLuserData" />
+          <End Type="Self.TBLgameData" Multiplicity="*" Role="TBLgameData" />
+          <ReferentialConstraint>
+            <Principal Role="TBLuserData">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TBLgameData">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MVCTestEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="PublicMessengers" EntityType="Self.PublicMessenger" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TBLgameDatas" EntityType="Self.TBLgameData" />
+          <EntitySet Name="TBLuserDatas" EntityType="Self.TBLuserData" />
+          <AssociationSet Name="FK_PublicMessenger_TBLgameData" Association="Self.FK_PublicMessenger_TBLgameData">
+            <End EntitySet="TBLgameDatas" Role="TBLgameData" />
+            <End EntitySet="PublicMessengers" Role="PublicMessenger" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PublicMessenger_TBLuserData" Association="Self.FK_PublicMessenger_TBLuserData">
+            <End EntitySet="TBLuserDatas" Role="TBLuserData" />
+            <End EntitySet="PublicMessengers" Role="PublicMessenger" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TBLgameData_TBLuserData" Association="Self.FK_TBLgameData_TBLuserData">
+            <End EntitySet="TBLuserDatas" Role="TBLuserData" />
+            <End EntitySet="TBLgameDatas" Role="TBLgameData" />
+          </AssociationSet>
+          <EntitySet Name="PersonelMessages" EntityType="MVCTestModel.PersonelMessage" />
+          <AssociationSet Name="FK_PersonelMessage_TBLuserData" Association="MVCTestModel.FK_PersonelMessage_TBLuserData">
+            <End EntitySet="TBLuserDatas" Role="TBLuserData" />
+            <End EntitySet="PersonelMessages" Role="PersonelMessage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonelMessage_TBLuserData1" Association="MVCTestModel.FK_PersonelMessage_TBLuserData1">
+            <End EntitySet="TBLuserDatas" Role="TBLuserData" />
+            <End EntitySet="PersonelMessages" Role="PersonelMessage" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="PersonelMessage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="SenderID" Nullable="false" Type="Int32" />
+          <Property Name="ReceiverID" Nullable="false" Type="Int32" />
+          <Property Name="Message" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Date" Precision="3" Type="DateTime" />
+          <NavigationProperty Name="TBLuserData" Relationship="MVCTestModel.FK_PersonelMessage_TBLuserData" FromRole="PersonelMessage" ToRole="TBLuserData" />
+          <NavigationProperty Name="TBLuserData1" Relationship="MVCTestModel.FK_PersonelMessage_TBLuserData1" FromRole="PersonelMessage" ToRole="TBLuserData" />
+        </EntityType>
+        <Association Name="FK_PersonelMessage_TBLuserData">
+          <End Type="MVCTestModel.TBLuserData" Multiplicity="1" Role="TBLuserData" />
+          <End Type="MVCTestModel.PersonelMessage" Multiplicity="*" Role="PersonelMessage" />
+          <ReferentialConstraint>
+            <Principal Role="TBLuserData">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PersonelMessage">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonelMessage_TBLuserData1">
+          <End Type="MVCTestModel.TBLuserData" Multiplicity="1" Role="TBLuserData" />
+          <End Type="MVCTestModel.PersonelMessage" Multiplicity="*" Role="PersonelMessage" />
+          <ReferentialConstraint>
+            <Principal Role="TBLuserData">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PersonelMessage">
+              <PropertyRef Name="ReceiverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MVCTestModelStoreContainer" CdmEntityContainer="MVCTestEntities2">
+          <EntitySetMapping Name="PublicMessengers">
+            <EntityTypeMapping TypeName="MVCTestModel.PublicMessenger">
+              <MappingFragment StoreEntitySet="PublicMessenger">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+                <ScalarProperty Name="SenderName" ColumnName="SenderName" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Senddate" ColumnName="Senddate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="MVCTestModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBLgameDatas">
+            <EntityTypeMapping TypeName="MVCTestModel.TBLgameData">
+              <MappingFragment StoreEntitySet="TBLgameData">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="flagsUsed" ColumnName="flagsUsed" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Try" ColumnName="Try" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBLuserDatas">
+            <EntityTypeMapping TypeName="MVCTestModel.TBLuserData">
+              <MappingFragment StoreEntitySet="TBLuserData">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="NameSurname" ColumnName="NameSurname" />
+                <ScalarProperty Name="ProfilePic" ColumnName="ProfilePic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonelMessages">
+            <EntityTypeMapping TypeName="MVCTestModel.PersonelMessage">
+              <MappingFragment StoreEntitySet="PersonelMessage">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="ReceiverID" ColumnName="ReceiverID" />
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

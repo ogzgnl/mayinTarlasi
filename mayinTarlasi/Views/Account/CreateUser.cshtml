@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "CreateUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<link href="~/Content/toastr.css" rel="stylesheet" />
+<style>
+    body {
+        background-image: url('../../Pictures/BLACK_IV_phone-3.jpg');
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .entryArea {
+        margin-left: 75%;
+        padding: 30px;
+        background-color: #191818b0;
+        width: 300px;
+        height: 600px;
+    }
+
+        .entryArea h1 {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            color: white;
+            background-color: #2f2f2f3d;
+            padding: 6px;
+        }
+
+        .entryArea input {
+            display: block;
+            width: 100%;
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .entryArea button {
+            margin-top: 40px;
+            width: 100px;
+            background-color: rgba(35, 34, 34, 1);
+            border-color: white;
+        }
+</style>
+<div class="entryArea">
+    <h1>Kayıt Ol</h1>
+    <input type="text" id="Username" placeholder="Kullanıcı Adı" required="required" value=""><br />
+    <input type="password" id="Password" placeholder="Şifre" required="required" value=""><br />
+    <input type="email" id="Email" placeholder="Email" required="required" value=""><br />
+    <input type="text" id="NameSurname" placeholder="Ad Soyad" required="required" value=""><br />
+    <hr />
+    <button type="submit" class="btn btn-success btn-lg btn-block" id="SEND">Kayıt Ol</button>
+</div>
+<script>
+    $("#SEND").click(function () {
+        var name = $('#Username').value;
+        if (($('#Username').val().length > 0) && ($('#Password').val().length > 0) && ($('#Email').val().length > 0) && ($('#NameSurname').val().length > 0)) {
+            var name = $('#Username').val();
+            var password = $('#Password').val();
+            var Email = $('#Email').val();
+            var NameSurname = $('#NameSurname').val();
+            $.ajax({
+                type: "POST",
+                url: 'userCreater',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ UserName: name, Password: password, EMail: Email, NameSurname, NameSurname }),
+                success: function (data) {
+                    if (data == "True") {
+                        toastr.success('Kayıt başarılı.')
+                    }
+                },
+                error: function (data) {
+                    toastr.error('Kayıt başarısız.')
+                }
+            });
+
+        }
+        else {
+            toastr.error("Lütfen gerekli bilgileri giriniz.");
+        }
+
+    });
+</script>

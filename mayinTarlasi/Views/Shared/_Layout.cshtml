@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @*//IMPLEMENTS*@
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/toastr.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/toastr.js"></script>
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+    @*IMPLEMENTS END*@
+    <style>
+        * {
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .Notificationbar {
+            background-color: #4c3e3e;
+            display: none;
+            margin-right: 14px;
+            margin-top: 0px;
+            padding: 10px;
+            word-break: break-word;
+            color: white;
+        }
+
+        .notifications {
+            color: grey;
+            padding-top: 29px;
+            padding: 2px;
+            margin-top: 14px;
+            border-radius: 2px;
+            font-size: 18px;
+        }
+    </style>
+
+    <title>Mayın Tarlası</title>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                </button>
+                <div>
+                    @Html.ActionLink("Mayın Tarlası", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Oyun Bilgileri", "ScoreTable", "Details")</li>
+                    <li>@Html.ActionLink("İletişim", "Contact", "Home")</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @{
+                        if (Session["IsLoggedIn"] != null)
+                        {
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notCount" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-bell" aria-hidden="true"></span> <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                </ul>
+                            </li>
+                            <li>@Html.ActionLink("Hesabım", "myAccount", "Account")</li>
+                            <li>@Html.ActionLink("Çıkış Yap", "LogOut", "Account")</li>
+
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Kayıt Ol", "CreateUser", "Account")</li>
+                            <li>@Html.ActionLink("Giriş Yap", "Login", "Account")</li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+<script>
+    $("#notifications").click(function () {
+        $(".Notificationbar").toggle(300);
+    });
+</script>
